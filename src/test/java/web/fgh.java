@@ -1,4 +1,4 @@
-package tests;
+package web;
 
 public class fgh {
 }
