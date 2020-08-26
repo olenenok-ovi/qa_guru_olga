@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Selectors.byXpath;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
+import static controllers.propertyLoader.*;
 
 public class AVTest {
 
@@ -19,18 +20,36 @@ public class AVTest {
         // открыть сайт av.ru
         open("https://av.ru");
         //выбрать регион Москва
-        $(byXpath("//div[@class='b-region-modal__button b-button b-button_green']")).click();
+        $(".b-region-modal__button").click();
     }
 
     @Test
     void avSearchTest() {
         // клик на кнопку поиска
-        $(byXpath("//button[@class='b-button b-header-search__btn js-quicksearch']")).click();
+        $(".js-quicksearch").click();
         // вводим в строку поиска vici
         $(byName("text")).setValue("vici").pressEnter();
         // проверяем, что результат поиска не ноль
-        $(byXpath("//span[@class='b-product-menu__count']")).shouldNotHave(text("(0)"));
+        $(".b-product-menu__count").shouldNotHave(text("(0)"));
         // проверяем, что первый элемент в названии содержит Vici, название - в атрибуте элемента
-        $(byXpath("//div[@class='b-grid__item']/div")).shouldHave(attributeMatching("data-name", ".*VICI.*" ));
+        $(".b-product").shouldHave(attributeMatching("data-name", ".*VICI.*" ));
+    }
+
+    @Test
+    void avAuthTest(){
+        // инициализация данных
+        String mail = loadProperty(EMAIL);
+        String password = loadProperty(PASSWORD);
+
+        // клик на кнопку войти
+        $(".js-auth-modal").click();
+
+        // установка пары логин-пароль
+        $(byName("j_username")).setValue(mail);
+        $(byName("j_password")).setValue(password);
+        $(".js-login").click();
+
+        // проверка, что в заголовке появилось имя пользователя
+        $(".b-header-dropdown__title_login").shouldHave(text("Авто"));
     }
 }
