@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperties;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byName;
-import static com.codeborne.selenide.Selectors.byXpath;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
@@ -51,5 +50,50 @@ public class AVTest {
 
         // проверка, что в заголовке появилось имя пользователя
         $(".b-header-dropdown__title_login").shouldHave(text("Авто"));
+    }
+
+    @Test
+    void avChangeRegion(){
+        //в шапке нажать кнопку смены региона
+        $(".b-header-dropdown_top").click();
+
+        //выбрать Санкт-Петербург
+        $(".js-region-change").click();
+
+        //Проверить, что выбран Санкт-Петербург
+        $(".b-header-dropdown__title").shouldHave(text("Санкт-Петербург"));
+    }
+
+    @Test
+    void avSelectTime(){
+        //кликнуть на смену времени
+        $(".b-header-nav__timeslot-choose").click();
+
+        //Ввод адреса
+        $(byName("address")).setValue("Россия, Москва, Выползов переулок, 7").pressEnter();
+
+        //Ввод телефона
+        $(byName("phone")).setValue("1234567890").pressEnter();
+
+        // Нажать на кнопку выбрать время
+        $(".js-save-address").click();
+
+        //Выбор слота доставки
+        $(".b-button_reactive").click();
+
+        //Проверить, что отображается правильный таймслот
+        $(".b-header-nav__timeslot-date").shouldHave(text("За 60 минут"));
+    }
+
+    @Test
+    void avOpenNews() {
+
+        //Кликаем на новинки в меню
+        $(byText("Новинки")).click();
+        $(byText("Новинки онлайн")).click();
+
+        //Проверяем, что у товаров нужный шильдик
+        $(".b-product-tag").shouldHave(text("Новинка Онлайн"));
+
     }
 }
