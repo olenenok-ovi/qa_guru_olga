@@ -1,5 +1,6 @@
 package web;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,9 +8,7 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperties;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 import static controllers.propertyLoader.*;
 
 public class AVTest {
@@ -20,6 +19,11 @@ public class AVTest {
         open("https://av.ru");
         //выбрать регион Москва
         $(".b-region-modal__button").click();
+    }
+
+    @AfterEach
+    public void avCoseBrowser(){
+        clearBrowserCookies();
     }
 
     @Test
